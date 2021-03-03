@@ -11,9 +11,21 @@ const addButton = homeworkContainer.querySelector('#add-button');
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
 filterNameInput.addEventListener('input', function () {
+    filterValue = filterNameInput.value
+    updateTable()
 });
 
 addButton.addEventListener('click', () => {
+    const name = encodeURIComponent(addNameInput.value.trim())
+    const value = encodeURIComponent(addValueInput.value.trim())
+
+    document.cookie = `${name}=${value}`
+    cookiesMap.set(name, value)
+
+    updateTable()
+
+    addNameInput.value = ''
+    addValueInput.value = ''
 });
 
 listTable.addEventListener('click', (e) => {
@@ -57,7 +69,7 @@ function updateTable() {
         const removeTD = document.createElement('td')
         const removeButton = document.createElement('button')
 
-        removeButton.dataset.role = 'remove-cookies'
+        removeButton.dataset.role = 'remove-cookie'
         removeButton.dataset.cookiesName = name
         removeButton.textContent = 'удалить'
         nameTD.textContent = name
@@ -75,6 +87,15 @@ function updateTable() {
         } else {
             listTable.parentNode.classList.add('hidden')
         }
-
-
 }
+listTable.addEventListener('click', (event) => {
+    console.log('remove')
+    const {role, cookieName} = event.target.dataset
+
+    if (role === 'remove-cookie') {
+        cookiesMap.delete(cookieName)
+        document.cookie = `${cookieName}=deleted; max-age=0`
+        updateTable()
+    }
+})
+
