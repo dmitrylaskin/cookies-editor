@@ -1,13 +1,8 @@
 const homeworkContainer = document.querySelector('#app');
-// текстовое поле для фильтрации cookie
 const filterNameInput = homeworkContainer.querySelector('#filter-name-input');
-// текстовое поле с именем cookie
 const addNameInput = homeworkContainer.querySelector('#add-name-input');
-// текстовое поле со значением cookie
 const addValueInput = homeworkContainer.querySelector('#add-value-input');
-// кнопка "добавить cookie"
 const addButton = homeworkContainer.querySelector('#add-button');
-// таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
 filterNameInput.addEventListener('input', function () {
@@ -48,7 +43,7 @@ function getCookies() {
 }
 
 function updateTable() {
-    console.log('update')
+
     const fragment = document.createDocumentFragment()
     let total = 0
     listTable.innerHTML = ''
@@ -70,7 +65,7 @@ function updateTable() {
         const removeButton = document.createElement('button')
 
         removeButton.dataset.role = 'remove-cookie'
-        removeButton.dataset.cookiesName = name
+        removeButton.dataset.cookieName = name
         removeButton.textContent = 'удалить'
         nameTD.textContent = name
         valueTD.textContent = value
@@ -89,7 +84,7 @@ function updateTable() {
         }
 }
 listTable.addEventListener('click', (event) => {
-    console.log('remove')
+
     const {role, cookieName} = event.target.dataset
 
     if (role === 'remove-cookie') {
