@@ -20,6 +20,8 @@ listTable.addEventListener('click', (e) => {
 });
 
 const cookiesMap = getCookies()
+let filterValue = ''
+updateTable()
 
 
 function getCookies() {
@@ -33,6 +35,46 @@ function getCookies() {
     return map
 }
 
-addButton.addEventListener('click', () => {
-    console.log(cookiesMap.get('test'))
-})
+function updateTable() {
+    console.log('update')
+    const fragment = document.createDocumentFragment()
+    let total = 0
+    listTable.innerHTML = ''
+
+    for (const [name, value] of cookiesMap) {
+        if (
+            filterValue
+            && !name.toLowerCase().includes(filterValue.toLowerCase())
+            && !value.toLowerCase().includes(filterValue.toLowerCase())
+        ) {
+            continue;
+        }
+        total++
+
+        const tr = document.createElement('tr')
+        const nameTD = document.createElement('td')
+        const valueTD = document.createElement('td')
+        const removeTD = document.createElement('td')
+        const removeButton = document.createElement('button')
+
+        removeButton.dataset.role = 'remove-cookies'
+        removeButton.dataset.cookiesName = name
+        removeButton.textContent = 'удалить'
+        nameTD.textContent = name
+        valueTD.textContent = value
+        valueTD.classList.add('value')
+
+        tr.append(nameTD, valueTD, removeTD)
+        removeTD.append(removeButton)
+        fragment.append(tr)
+
+    }
+        if (total) {
+            listTable.parentNode.classList.remove('hidden')
+            listTable.append(fragment)
+        } else {
+            listTable.parentNode.classList.add('hidden')
+        }
+
+
+}
